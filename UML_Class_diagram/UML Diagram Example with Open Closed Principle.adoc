@@ -8,7 +8,6 @@ Note : Shape, Rectangle, Circle and AreaCalculator are  enough for Open Closed P
 @startuml
 
 namespace dotNet {
-
     class Object 
 }
 
