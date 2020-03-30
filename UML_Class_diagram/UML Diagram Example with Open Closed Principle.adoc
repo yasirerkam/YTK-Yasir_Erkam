@@ -1,0 +1,63 @@
+= UML Diagram Example with Open Closed Principle
+
+Note : Shape, Rectangle, Circle and AreaCalculator are  enough for Open Closed Principle. The other objects are there for to explain UML relationships.
+
+.UML Open Closed Principle (OCP)
+[uml,file="UML-OpenClosedPrinciple(OCP).png"]
+--
+@startuml
+
+namespace dotNet {
+
+    class Object 
+}
+
+namespace UmlOCP {
+
+    abstract class Shape {
+        + {abstract} double Area()
+    }
+    
+    class Rectangle {
+        - double Width
+        - double Height
+        + double Area()
+    }
+    
+    class Circle {
+        + double Radius
+        + double Area()
+    }
+    
+    class AreaCalculator {
+        + double Area(Shape[] shapes)
+    }
+    
+    Line  --* Circle : <3>
+    Line  --* Rectangle : <3>
+    Shape ..|> Circle : Uygular. <5>
+    Shape ..|> Rectangle : Uygular. <5>
+    Shape ..> AreaCalculator : Area fonksiyonu parametre olarak kullanır. <7>
+    Circle --|> CustomCircle : Kalıtım <4>
+    Circle --* Geometri : <3>
+    Rectangle --* Geometri : <3>
+    Circle --o GeometrikNesneler : <2>
+    Rectangle --o GeometrikNesneler : <2>
+    Math -- Geometri : <1>
+
+}
+
+dotNet ..> UmlOCP : .net kütüphanesine bağımlıdır. <6>
+
+@enduml
+--
+
+Yukarıdaki resimde büyüktür-küçüktür <> işaretleri arasında işaretlenmiş örnekler gösterilmiştir: ::
+
+. Association (Referans veya Birliktelik)
+. Aggregation (Barındırma, İçerme)
+. Composition (Bağımlı İyelik)
+. Generalization (Genelleme)
+. Realization (Gerçekleme)
+. Dependency (Bağımlılık)
+. Use (Kullanma)
