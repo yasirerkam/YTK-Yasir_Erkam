@@ -1,0 +1,112 @@
+:sectanchors:
+:sectlinks:
+
+= Singleton Example
+Yasir Erkam Özdemir
+
+Bu yazımda thread güvenli olan ve olmayan iki örneği bir online oyun senaryosu üzerinden vereceğim. Bu senaryoda ``Gamer`` ve  ``GameServer`` olan iki adet class olacak. Oyun programramımızda ``GameServer`` class'ının singleton olması gerekiyor ki ``GameServer``'a bağlanan oyuncular(``Gamer``) birbirleriyle oynayabilmek için aynı ``GameServer``'a bağlanabilsinler.
+
+Bir class'ın singleton olabilmesi başı şartlara sahip olması gerekir: ::
+* Özel ve parametresiz tek bir kurucu. Bu, diğer sınıfların onu örneklemesini (instance) önler (Ki bu, singleton deseninin ihlali anlamına gelir).
+
+* Varsa, bir kez oluşturulan örneğe başvuru tutan statik değişken. "public statik" oluşturulan tek bir örneğe referans almak anlamına gelir.
+
+* Statik olarak oluşturulan değişkeni döndüren bir public method.
+
+
+
+== 1. Singleton Non-Thread Safe Example
+
+[source,csharp]
+----
+include::GameServerV1.cs[]
+----
+<1> İki farklı thread If testini (instance == null) değerlendirebilirdi ve doğru bulabilirdi, sorna her ikisi de singleton desenini ihlal eden örnekler oluştururdu.
+
+.Singleton Non-Thread Safe Example
+[uml,file="UML-SingletonNonThreadSafeExample.png"]
+--
+@startuml
+
+namespace SingletonNonThreadSafe {
+
+    class GameServer
+    {
+        - {static} GameServer instance = null;   // <1>
+        - GameServer()   // <2>
+        + {static} GameServer GetInstance()   // <3>
+        + Connection Connect()   // <4>
+        + bool Quit()   // <5>
+    }
+    
+    class Gamer
+    {
+        + GameServer gameServer = GameServer.GetInstance();   // <6>
+    }
+    
+    Gamer "many" --> "1" GameServer :   <7>
+
+}
+
+@enduml
+--
+
+. Bir kez oluşturulan örneğe başvuru tutan private statik değişken.
+. Özel ve parametresiz tek bir kurucu. Bu, diğer sınıfların onu örneklemesini (instance) önler.
+. Statik olarak oluşturulan değişkeni döndüren bir public method.
+. Bağlantıyı oluşturan method
+. Bağlantıyı kapatan method
+. Gamer içindeki singleton instance'ı
+. Çoktan bire Association ilişkisi
+
+
+
+== 2. Singleton Thread Safe Example
+
+
+[source,csharp]
+----
+include::GameServerV2.cs[]
+----
+<1> .NET 4 (veya üstü) kullanıyorsanız, lazines'ı gerçekten basitleştirmek için System.Lazy<T> türünü kullanabilirsiniz. Tek yapmanız gereken, Singleton yapıcısını çağıran kurucuya bir temsilci aktarmaktır, ki bu en kolay lambda ifadesiyle yapılır.
+
+
+.Singleton Thread Safe Example
+[uml,file="UML-SingletonThreadSafeExample.png"]
+--
+@startuml
+
+namespace SingletonThreadSafe {
+
+    class GameServer
+    {
+        - {static} readonly Lazy<GameServer> lazy = new Lazy<GameServer>(() => new GameServer());   // <1>
+        - GameServer()   // <2>
+        + {static} GameServer GetInstance()   // return lazy.Value   // <3>
+        + Connection Connect()   // <4>
+        + bool Quit()   // <5>
+    }
+    
+    class Gamer
+    {
+        + GameServer gameServer = GameServer.GetInstance();   // <6>
+    }
+    
+    Gamer "many" --> "1" GameServer :   <7>
+
+}
+
+@enduml
+--
+
+Yukarıdaki resimde büyüktür-küçüktür <> işaretleri arasında işaretlenmiş örnekler gösterilmiştir: ::
+
+. Bir kez oluşturulan örneğe başvuru tutan private statik değişken.
+. Özel ve parametresiz tek bir kurucu. Bu, diğer sınıfların onu örneklemesini (instance) önler.
+. Statik olarak oluşturulan değişkeni döndüren bir public method.
+. Bağlantıyı oluşturan method
+. Bağlantıyı kapatan method
+. Gamer içindeki singleton instance'ı
+. Çoktan bire Association ilişkisi
+
+
