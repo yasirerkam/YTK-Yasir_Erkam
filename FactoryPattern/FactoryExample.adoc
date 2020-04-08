@@ -1,0 +1,139 @@
+:sectanchors:
+:sectlinks:
+
+= Factory Pattern Example
+Yasir Erkam Özdemir
+
+Factory Pattern oluşturduğumuz bir interface ya da abstract sınıftan türeterek başka bir sınıf oluşturma işlemidir. Oldukça sık kullanılan bu pattern aynı özelliği kullanmak isteyen sınıflar tarafından kullanılır.
+
+Daha somut bir örnek ile açıklayalım.
+
+Yapacağımız örnekte bir Araba’nın özelliklerini bildirecek bir yazılım yapacağız. Kullanıcı araba seçecek ancak seçilen arabanın hatchback mi yoksa sedan özellikli olacağını bilmiyoruz ve bu değişkenlik gösterebilir. Kullanıcının seçimine bırakılan bu işlemde kullanıcının her seçiminde kod değişikliği yapmamak için Factory Pattern’e uygun bu örneği yazacağız.
+
+Şimdi Araba interfacemizi oluşturalım.
+
+[source,java]
+----
+public interface  Araba {
+    public abstract String getTip();
+}
+----
+
+Arabamızın bir tipi olucak Hatchback ya da sedan.
+
+Şimdi Hatchback ya da Sedan tiplerini oluşturacak Modellerimizi oluşturalım. Bu  modeller arabaya bağlı olacağı için Araba interfacemizi implement edeceğiz.
+
+[source,java]
+----
+public class Hatchback implements Araba{
+
+    public String getTip() {
+        return "Hatchback Tipinde Araba Seçildi.";
+    }
+}
+----
+
+[source,java]
+----
+public class Sedan implements Araba {
+
+    public String getTip() {
+        return "Sedan Tipinde Araba Seçildi.";
+    }
+}
+----
+
+Modellerimizi oluşturduk. Şimdi sıra geldi en önemli yere. Yapmak istediğimiz şey. Kullanıcı ne zaman araç tipi seçerse o araç tipi nesnesi oluşturulmalı ve ardından işleme devam etmeli. Bunun için bir “Factory” oluşturacağız.
+
+[source,java]
+----
+public class ArabaFactory {
+
+    public static Araba getAraba(String tip){
+
+        if("Sedan".equalsIgnoreCase(tip)) return new Sedan();
+        else if("Hatchback".equalsIgnoreCase(tip)) return new Hatchback();
+
+        return null;
+    }
+}
+----
+
+Kullanıcı araba istiyor ve tipini seçecek. Tip seçildiği anda ilgili nesne oluşturulacak. Yukarıda yaptığımız işlem bu. Şimdi sıra geldi programımızı çalıştırmaya. Main classımızı oluşturalım.
+
+[source,java]
+----
+public class MainFactory {
+
+    public static void main(String[] args) {
+        Araba hatchbackAraba=ArabaFactory.getAraba("Hatchback");
+        Araba sedanAraba=ArabaFactory.getAraba("Sedan");
+
+
+        System.out.println(hatchbackAraba.getTip());
+        System.out.println(sedanAraba.getTip());
+    }
+}
+----
+
+Programımızdan iki adet araba istedik ve bu arabalar Araba nesnesinden üretilerek ArabaFactory’e göndererek ilgili nesnemizin oluşturulmasını sağladık.
+
+Sonuç olarak ekranda şöyle bir görüntü olmalı.
+
+[source,java]
+----
+Hatchback Tipinde Araba Seçildi.
+Sedan Tipinde Araba Seçildi.
+----
+
+.Factory Pattern Example
+[uml,file="UML-FactoryPatternExample.png"]
+--
+@startuml
+
+namespace FactoryPatternExample {
+
+    interface  Araba
+    {
+        +  {abstract} String getTip()
+    }
+
+    class Hatchback 
+    {
+        + String getTip()
+    }
+    
+    class Sedan 
+    {
+        + String getTip()
+    }
+    
+    
+    class ArabaFactory 
+    {
+        + {static} Araba getAraba(String tip)
+    }
+    
+     class MainFactory  
+    {
+        + {static} void main(String[] args)
+    }
+    
+    
+    MainFactory "0" --> "many" Araba :   <1>
+    Araba <|.. Hatchback : Uygular. <5>
+    Araba <|.. Sedan : Uygular. <5>
+    Araba <.. ArabaFactory  : Kullanır <7>
+
+}
+
+@enduml
+--
+
+. Association (Referans veya Birliktelik)
+. Aggregation (Barındırma, İçerme)
+. Composition (Bağımlı İyelik)
+. Generalization (Genelleme)
+. Realization (Gerçekleme)
+. Dependency (Bağımlılık)
+. Use (Kullanma)
