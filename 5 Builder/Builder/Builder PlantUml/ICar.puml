@@ -1,0 +1,24 @@
+@startuml
+enum BlindSpotMonitor {
+    Included,
+    NotIncluded,
+}
+enum Touchscreen {
+    Included,
+    NotIncluded,
+}
+enum AllWheelDrive {
+    Included,
+    NotIncluded,
+}
+enum WirelessSmartphoneCharger {
+    Included,
+    NotIncluded,
+}
+interface ICar {
+    SetBlindSpotMonitor(blindSpotMonitor:BlindSpotMonitor) : void
+    SetTouchscreen(touchscreen:Touchscreen) : void
+    SetAllWheelDrive(allWheelDrive:AllWheelDrive) : void
+    SetWirelessSmartphoneCharger(wirelessSmartphoneCharger:WirelessSmartphoneCharger) : void
+}
+@enduml

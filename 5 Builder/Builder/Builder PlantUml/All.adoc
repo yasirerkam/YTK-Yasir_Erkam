@@ -1,0 +1,72 @@
+==jkhlkjh
+
+
+@startuml
+class Car {
+    + SetAllWheelDrive(allWheelDrive:AllWheelDrive) : void
+    + SetBlindSpotMonitor(blindSpotMonitor:BlindSpotMonitor) : void
+    + SetTouchscreen(touchscreen:Touchscreen) : void
+    + SetWirelessSmartphoneCharger(wirelessSmartphoneCharger:WirelessSmartphoneCharger) : void
+}
+ICar <|-- Car
+Car --> "allWheelDrive" AllWheelDrive
+Car --> "blindSpotMonitor" BlindSpotMonitor
+Car --> "touchscreen" Touchscreen
+Car --> "wirelessSmartphoneCharger" WirelessSmartphoneCharger
+class Dealer {
+    + Dealer(carBuilder:ICarBuilder)
+    + GetCar() : Car
+    + ProduceCar() : void
+}
+Dealer --> "carBuilder" ICarBuilder
+class EleganceCar {
+    + BuildAllWheelDrive() : void
+    + BuildBlindSpotMonitor() : void
+    + BuildTouchscreen() : void
+    + BuildWirelessSmartphoneCharger() : void
+    + GetCar() : Car
+}
+ICarBuilder <|-- EleganceCar
+EleganceCar o-> "car" Car
+enum BlindSpotMonitor {
+    Included,
+    NotIncluded,
+}
+enum Touchscreen {
+    Included,
+    NotIncluded,
+}
+enum AllWheelDrive {
+    Included,
+    NotIncluded,
+}
+enum WirelessSmartphoneCharger {
+    Included,
+    NotIncluded,
+}
+interface ICar {
+    SetBlindSpotMonitor(blindSpotMonitor:BlindSpotMonitor) : void
+    SetTouchscreen(touchscreen:Touchscreen) : void
+    SetAllWheelDrive(allWheelDrive:AllWheelDrive) : void
+    SetWirelessSmartphoneCharger(wirelessSmartphoneCharger:WirelessSmartphoneCharger) : void
+}
+interface ICarBuilder {
+    BuildBlindSpotMonitor() : void
+    BuildTouchscreen() : void
+    BuildAllWheelDrive() : void
+    BuildWirelessSmartphoneCharger() : void
+    GetCar() : Car
+}
+class NormalCar {
+    + BuildAllWheelDrive() : void
+    + BuildBlindSpotMonitor() : void
+    + BuildTouchscreen() : void
+    + BuildWirelessSmartphoneCharger() : void
+    + GetCar() : Car
+}
+ICarBuilder <|-- NormalCar
+NormalCar o-> "car" Car
+class Program {
+    - {static} Main(args:string[]) : void
+}
+@enduml

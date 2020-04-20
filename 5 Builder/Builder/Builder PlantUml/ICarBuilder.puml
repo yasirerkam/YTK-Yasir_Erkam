@@ -1,0 +1,9 @@
+@startuml
+interface ICarBuilder {
+    BuildBlindSpotMonitor() : void
+    BuildTouchscreen() : void
+    BuildAllWheelDrive() : void
+    BuildWirelessSmartphoneCharger() : void
+    GetCar() : Car
+}
+@enduml

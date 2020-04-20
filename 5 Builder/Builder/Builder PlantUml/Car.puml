@@ -1,0 +1,13 @@
+@startuml
+class Car {
+    + SetAllWheelDrive(allWheelDrive:AllWheelDrive) : void
+    + SetBlindSpotMonitor(blindSpotMonitor:BlindSpotMonitor) : void
+    + SetTouchscreen(touchscreen:Touchscreen) : void
+    + SetWirelessSmartphoneCharger(wirelessSmartphoneCharger:WirelessSmartphoneCharger) : void
+}
+ICar <|-- Car
+Car --> "allWheelDrive" AllWheelDrive
+Car --> "blindSpotMonitor" BlindSpotMonitor
+Car --> "touchscreen" Touchscreen
+Car --> "wirelessSmartphoneCharger" WirelessSmartphoneCharger
+@enduml

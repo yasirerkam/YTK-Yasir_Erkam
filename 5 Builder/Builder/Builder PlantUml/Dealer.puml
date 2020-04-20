@@ -1,0 +1,8 @@
+@startuml
+class Dealer {
+    + Dealer(carBuilder:ICarBuilder)
+    + GetCar() : Car
+    + ProduceCar() : void
+}
+Dealer --> "carBuilder" ICarBuilder
+@enduml

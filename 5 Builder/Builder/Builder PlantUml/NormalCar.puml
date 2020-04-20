@@ -1,0 +1,11 @@
+@startuml
+class NormalCar {
+    + BuildAllWheelDrive() : void
+    + BuildBlindSpotMonitor() : void
+    + BuildTouchscreen() : void
+    + BuildWirelessSmartphoneCharger() : void
+    + GetCar() : Car
+}
+ICarBuilder <|-- NormalCar
+NormalCar o-> "car" Car
+@enduml
