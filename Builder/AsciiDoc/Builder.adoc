@@ -1,5 +1,5 @@
 == Builder Pattern Car Example
-Yasir Erkam Özdemir
+Yasir Erkam
 
 .Builder Pattern Car Example
 [uml,file="UML-BuilderPatternCarExample.png"]
